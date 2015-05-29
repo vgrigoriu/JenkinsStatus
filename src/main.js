@@ -42,31 +42,21 @@ var JobList = React.createClass({
     }
 });
 
-var jobs = [
-    {
-        title: 'EmerGIS',
-        result: 'SUCCESS',
-        building: false
-    },
-    {
-        title: 'WKRAFT',
-        result: 'FAILURE',
-        building: false
-    },
-    {
-        title: 'Some Job',
-        result: 'SUCCESS',
-        building: true
-    },
+function getJobStatusPromise(jobName) {
+    return new Promise((resolve, reject) => {
+        $.get(`http://jenkins.teamnet.ro/job/${jobName}/lastBuild/api/json`, resolve);
+    });
+};
+
+var jobNames = [
+    'Watman.UserManagement.Build',
+    'SnuauNext_Telephony_CI',
+    'siamc-ci'
 ];
 
-new Promise((resolve, reject) => {
-    setTimeout(() => {
-        alert('vaca');
-        resolve();
-    }, 1000);
-}).then(() =>
+Promise.all(jobNames.map(getJobStatusPromise)).then((x) => {
     React.render(
         <JobList jobs={jobs} />,
         document.getElementById('main')
-    ));
+    );
+});
