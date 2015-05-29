@@ -58,10 +58,15 @@ var jobs = [
         result: 'SUCCESS',
         building: true
     },
-
 ];
 
-React.render(
-    <JobList jobs={jobs} />,
-    document.getElementById('main')
-);
+new Promise((resolve, reject) => {
+    setTimeout(() => {
+        alert('vaca');
+        resolve();
+    }, 1000);
+}).then(() =>
+    React.render(
+        <JobList jobs={jobs} />,
+        document.getElementById('main')
+    ));
