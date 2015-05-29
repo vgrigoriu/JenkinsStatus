@@ -1,15 +1,49 @@
-var JobList = React.createClass({
+var Job = React.createClass({
     render: function () {
         return (
-            <div class="job-list">
-                <div>Job 1</div>
-                <div>Job 2</div>
+            <div class='job'>
+                {this.props.job.title} is a {this.props.job.result}
             </div>
         );
     }
 });
 
+var JobList = React.createClass({
+    render: function () {
+        var jobNodes = this.props.jobs.map(function (job) {
+            return (
+                <Job job={job} />
+            );
+        });
+
+        return (
+            <div class="job-list">
+                {jobNodes}
+            </div>
+        );
+    }
+});
+
+var jobs = [
+    {
+        title: 'EmerGIS',
+        result: 'SUCCESS',
+        building: false
+    },
+    {
+        title: 'WKRAFT',
+        result: 'FAILURE',
+        building: false
+    },
+    {
+        title: 'Some Job',
+        result: 'SUCCESS',
+        building: true
+    },
+
+];
+
 React.render(
-    <JobList />,
+    <JobList jobs={jobs} />,
     document.getElementById('main')
 );
