@@ -44,17 +44,21 @@ var JobList = React.createClass({
 
 function getJobStatusPromise(jobName) {
     return new Promise((resolve, reject) => {
-        $.get(`http://jenkins.teamnet.ro/job/${jobName}/lastBuild/api/json`, resolve);
+        $.get(`http://localhost:8080/job/${jobName}/lastBuild/api/json`,
+        result => {
+            result.title = jobName;
+            resolve(result);
+        });
     });
 };
 
 var jobNames = [
-    'Watman.UserManagement.Build',
-    'SnuauNext_Telephony_CI',
-    'siamc-ci'
+    'Job1',
+    'Job2',
+    'Job3'
 ];
 
-Promise.all(jobNames.map(getJobStatusPromise)).then((x) => {
+Promise.all(jobNames.map(getJobStatusPromise)).then((jobs) => {
     React.render(
         <JobList jobs={jobs} />,
         document.getElementById('main')
