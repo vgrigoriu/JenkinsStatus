@@ -44,11 +44,15 @@ var JobList = React.createClass({
 
 function getJobStatusPromise(jobName) {
     return new Promise((resolve, reject) => {
-        $.get(`http://localhost:8080/job/${jobName}/lastBuild/api/json`,
-        result => {
-            result.title = jobName;
-            resolve(result);
-        });
+        var request = new XMLHttpRequest();
+        request.responseType = 'json';
+        request.onload = () => {
+            var lastBuild = request.response;
+            lastBuild.title = jobName;
+            resolve(request.response);
+        };
+        request.open('get', `http://localhost:8080/job/${jobName}/lastBuild/api/json`);
+        request.send();
     });
 };
 
